@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify, make_response
 from app import db
 from app.models.survey import Survey
+from .route_helpers import validate_model
 
 surveys_bp = Blueprint("survey", __name__, url_prefix="/surveys")
 
@@ -24,4 +25,15 @@ def create_survey():
     db.session.commit()
 
     return jsonify(new_survey.to_dict()), 200
-    # return make_response("done")
+
+
+@surveys_bp.route("/<survey_id>", methods=["PUT"])
+def update_survey(survey_id):
+    updated_survey = validate_model(Survey, survey_id)
+
+    request_body = request.get_json()
+    updated_survey.update_from_dict(request_body)
+
+    db.session.commit()
+
+    return jsonify(updated_survey.to_dict()), 200

@@ -50,3 +50,12 @@ class Survey(db.Model):
         survey_dict["payment_left"] = float(self.payment_left)
 
         return survey_dict
+
+    def update_from_dict(self, survey_data):
+        try:
+            for k, v in survey_data.items():
+                if hasattr(self, k):
+                    setattr(self, k, v)
+
+        except KeyError:
+            abort(make_response(jsonify({"details": "Invalid data"}), 400))
