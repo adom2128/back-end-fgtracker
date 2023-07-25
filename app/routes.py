@@ -23,4 +23,5 @@ def create_survey():
     db.session.add(new_survey)
     db.session.commit()
 
-    return make_response(jsonify(new_survey.to_dict()), 200)
+    return jsonify(new_survey.to_dict()), 200
+    # return make_response("done")

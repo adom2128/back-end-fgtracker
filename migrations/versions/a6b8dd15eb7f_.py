@@ -1,8 +1,8 @@
-"""Adds Survey model
+"""empty message
 
-Revision ID: b8a8a883104f
+Revision ID: a6b8dd15eb7f
 Revises: 
-Create Date: 2023-07-25 10:16:54.981002
+Create Date: 2023-07-25 13:13:03.689076
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'b8a8a883104f'
+revision = 'a6b8dd15eb7f'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -24,11 +24,11 @@ def upgrade():
     sa.Column('topic', sa.String(length=100), nullable=False),
     sa.Column('notes', sa.String(length=255), nullable=True),
     sa.Column('date_completed', sa.Date(), nullable=False),
-    sa.Column('compensation', sa.Numeric(precision=4, scale=2), nullable=False),
+    sa.Column('compensation', sa.Numeric(), nullable=False),
     sa.Column('stage', sa.String(length=100), nullable=False),
     sa.Column('payment_received', sa.Boolean(), nullable=False),
     sa.Column('payment_expiration_date', sa.Date(), nullable=True),
-    sa.Column('payment_left', sa.Numeric(precision=4, scale=2), nullable=True),
+    sa.Column('payment_left', sa.Numeric(), nullable=True),
     sa.PrimaryKeyConstraint('survey_id')
     )
     # ### end Alembic commands ###
