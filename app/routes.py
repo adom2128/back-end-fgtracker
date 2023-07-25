@@ -37,3 +37,15 @@ def update_survey(survey_id):
     db.session.commit()
 
     return jsonify(updated_survey.to_dict()), 200
+
+
+@surveys_bp.route("/<survey_id>", methods=["DELETE"])
+def delete_survey(survey_id):
+    survey_to_delete = validate_model(Survey, survey_id)
+
+    db.session.delete(survey_to_delete)
+    db.session.commit()
+
+    return make_response(
+        jsonify({"message": f"Survey {survey_id} successfully deleted"}), 200
+    )
