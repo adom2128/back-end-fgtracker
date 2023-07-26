@@ -24,7 +24,7 @@ def create_survey():
     db.session.add(new_survey)
     db.session.commit()
 
-    return jsonify(new_survey.to_dict()), 200
+    return jsonify(new_survey.to_dict()), 201
 
 
 @surveys_bp.route("/<survey_id>", methods=["PUT"])
@@ -47,5 +47,5 @@ def delete_survey(survey_id):
     db.session.commit()
 
     return make_response(
-        jsonify({"message": f"Survey {survey_id} successfully deleted"}), 200
+        jsonify({"details": f"Survey {survey_id} successfully deleted"}), 200
     )

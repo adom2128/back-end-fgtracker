@@ -8,10 +8,10 @@ class Survey(db.Model):
     company = db.Column(db.String(100), nullable=False)
     topic = db.Column(db.String(100), nullable=False)
     notes = db.Column(db.String(255), nullable=True)
-    date_completed = db.Column(db.Date, nullable=False)
-    compensation = db.Column(db.Numeric(), nullable=False)
-    stage = db.Column(db.String(100), nullable=False)
-    payment_received = db.Column(db.Boolean, nullable=False)
+    date_completed = db.Column(db.Date, nullable=False, default=date.today())
+    payment = db.Column(db.Numeric(), nullable=False, default=0)
+    stage = db.Column(db.String(100), nullable=False, default="Applied")
+    payment_received = db.Column(db.Boolean, nullable=False, default=False)
     payment_expiration_date = db.Column(db.Date, default=None)
     payment_left = db.Column(db.Numeric(), default=0)
 
@@ -23,7 +23,7 @@ class Survey(db.Model):
                 topic=survey_data["topic"],
                 notes=survey_data.get("notes", None),
                 date_completed=date.today(),
-                compensation=survey_data.get("compensation", 0),
+                payment=survey_data.get("payment", 0),
                 stage=survey_data.get("stage", "Applied"),
                 payment_received=survey_data.get("payment_received", False),
                 payment_expiration_date=survey_data.get(
@@ -43,19 +43,15 @@ class Survey(db.Model):
         survey_dict["topic"] = self.topic
         survey_dict["notes"] = self.notes
         survey_dict["date_completed"] = self.date_completed
-        survey_dict["compensation"] = float(self.compensation)
+        survey_dict["payment"] = float(self.payment)
         survey_dict["stage"] = self.stage
-        survey_dict["payment_received"] = float(self.payment_received)
+        survey_dict["payment_received"] = self.payment_received
         survey_dict["payment_expiration_date"] = self.payment_expiration_date
         survey_dict["payment_left"] = float(self.payment_left)
 
         return survey_dict
 
     def update_from_dict(self, survey_data):
-        try:
-            for k, v in survey_data.items():
-                if hasattr(self, k):
-                    setattr(self, k, v)
-
-        except KeyError:
-            abort(make_response(jsonify({"details": "Invalid data"}), 400))
+        for k, v in survey_data.items():
+            if hasattr(self, k):
+                setattr(self, k, v)
