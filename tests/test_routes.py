@@ -17,16 +17,17 @@ def test_get_surveys_one_saved(client, one_survey):
 
     assert response.status_code == 200
 
-    json_date_str = response_body[0]["date_completed"]
+    json_date_str = response_body[0]["date_survey_completed"]
     today_date_str = date.today().strftime("%a, %d %b %Y %H:%M:%S %Z") + "GMT"
     assert json_date_str == today_date_str
 
     assert response_body == [
         {
             "company": "Fieldwork Denver",
-            "date_completed": today_date_str,
+            "date_survey_completed": today_date_str,
             "notes": None,
             "payment": 150.0,
+            "date_fg_completed": None,
             "payment_expiration_date": None,
             "payment_left": 0.0,
             "payment_received": False,
@@ -43,9 +44,9 @@ def test_get_surveys_three_saved(client, three_surveys):
 
     assert response.status_code == 200
 
-    json_date_str_one = response_body[0]["date_completed"]
-    json_date_str_two = response_body[1]["date_completed"]
-    json_date_str_three = response_body[2]["date_completed"]
+    json_date_str_one = response_body[0]["date_survey_completed"]
+    json_date_str_two = response_body[1]["date_survey_completed"]
+    json_date_str_three = response_body[2]["date_survey_completed"]
     today_date_str = date.today().strftime("%a, %d %b %Y %H:%M:%S %Z") + "GMT"
     assert json_date_str_one == today_date_str
     assert json_date_str_two == today_date_str
@@ -54,9 +55,10 @@ def test_get_surveys_three_saved(client, three_surveys):
     assert response_body == [
         {
             "company": "Fieldwork Denver",
-            "date_completed": today_date_str,
+            "date_survey_completed": today_date_str,
             "notes": None,
             "payment": 150.0,
+            "date_fg_completed": None,
             "payment_expiration_date": None,
             "payment_left": 0.0,
             "payment_received": False,
@@ -66,9 +68,10 @@ def test_get_surveys_three_saved(client, three_surveys):
         },
         {
             "company": "Opinions for Cash",
-            "date_completed": today_date_str,
+            "date_survey_completed": today_date_str,
             "notes": None,
             "payment": 125.0,
+            "date_fg_completed": None,
             "payment_expiration_date": None,
             "payment_left": 0.0,
             "payment_received": False,
@@ -78,9 +81,10 @@ def test_get_surveys_three_saved(client, three_surveys):
         },
         {
             "company": "Ascendancy Research",
-            "date_completed": today_date_str,
+            "date_survey_completed": today_date_str,
             "notes": None,
             "payment": 140.0,
+            "date_fg_completed": None,
             "payment_expiration_date": None,
             "payment_left": 0.0,
             "payment_received": False,
@@ -99,15 +103,16 @@ def test_create_survey_with_limited_information(client):
     response_body = response.get_json()
 
     assert response.status_code == 201
-    json_date_str = response_body["date_completed"]
+    json_date_str = response_body["date_survey_completed"]
     today_date_str = date.today().strftime("%a, %d %b %Y %H:%M:%S %Z") + "GMT"
     assert json_date_str == today_date_str
 
     assert response_body == {
         "company": "Fieldwork Denver",
-        "date_completed": today_date_str,
+        "date_survey_completed": today_date_str,
         "notes": None,
         "payment": 150.0,
+        "date_fg_completed": None,
         "payment_expiration_date": None,
         "payment_left": 0.0,
         "payment_received": False,
@@ -133,26 +138,27 @@ def test_create_survey_with_all_information(client):
             "company": "Fieldwork Denver",
             "topic": "TV Shows",
             "payment": 150,
+            "date_fg_completed": None,
             "notes": "job as program manager",
             "stage": "Applied",
             "payment_received": False,
             "payment_expiration_date": None,
             "payment_left": 0,
-            "payment_received": 0,
         },
     )
     response_body = response.get_json()
 
     assert response.status_code == 201
-    json_date_str = response_body["date_completed"]
+    json_date_str = response_body["date_survey_completed"]
     today_date_str = date.today().strftime("%a, %d %b %Y %H:%M:%S %Z") + "GMT"
     assert json_date_str == today_date_str
 
     assert response_body == {
         "company": "Fieldwork Denver",
-        "date_completed": today_date_str,
+        "date_survey_completed": today_date_str,
         "notes": "job as program manager",
         "payment": 150.0,
+        "date_fg_completed": None,
         "payment_expiration_date": None,
         "payment_left": 0.0,
         "payment_received": False,
@@ -199,15 +205,16 @@ def test_update_survey(client, one_survey):
 
     assert response.status_code == 200
 
-    json_date_str = response_body["date_completed"]
+    json_date_str = response_body["date_survey_completed"]
     today_date_str = date.today().strftime("%a, %d %b %Y %H:%M:%S %Z") + "GMT"
     assert json_date_str == today_date_str
 
     assert response_body == {
         "company": "Fieldwork Denver",
-        "date_completed": today_date_str,
+        "date_survey_completed": today_date_str,
         "notes": None,
         "payment": 150.0,
+        "date_fg_completed": None,
         "payment_expiration_date": None,
         "payment_left": 75.0,
         "payment_received": True,
