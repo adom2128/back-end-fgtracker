@@ -11,7 +11,7 @@ class Survey(db.Model):
     date_survey_completed = db.Column(db.Date, nullable=False, default=date.today())
     payment = db.Column(db.Numeric(), nullable=False, default=0)
     stage = db.Column(db.String(100), nullable=False, default="Applied")
-    date_fg_completed = db.Column(db.Date)
+    date_fg_completed = db.Column(db.Date, nullable=False, default=None)
     payment_received = db.Column(db.Boolean, nullable=False, default=False)
     payment_expiration_date = db.Column(db.Date, default=None)
     payment_left = db.Column(db.Numeric(), default=0)
