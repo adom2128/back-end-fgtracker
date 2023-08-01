@@ -1,5 +1,5 @@
 from app import db
-from datetime import date
+from datetime import datetime
 from flask import abort, make_response, jsonify
 
 
@@ -8,12 +8,14 @@ class Survey(db.Model):
     company = db.Column(db.String(100), nullable=False)
     topic = db.Column(db.String(100), nullable=False)
     notes = db.Column(db.String(255), nullable=True)
-    date_survey_completed = db.Column(db.Date, nullable=False, default=date.today())
+    date_survey_completed = db.Column(
+        db.DateTime, nullable=False, default=datetime.today()
+    )
     payment = db.Column(db.Numeric(), nullable=False, default=0)
     stage = db.Column(db.String(100), nullable=False, default="Applied")
-    date_fg_completed = db.Column(db.Date, default=None)
+    date_fg_completed = db.Column(db.DateTime, default=None)
     payment_received = db.Column(db.Boolean, nullable=False, default=False)
-    payment_expiration_date = db.Column(db.Date, default=None)
+    payment_expiration_date = db.Column(db.DateTime, default=None)
     payment_left = db.Column(db.Numeric(), default=0)
 
     @classmethod
@@ -23,7 +25,7 @@ class Survey(db.Model):
                 company=survey_data["company"],
                 topic=survey_data["topic"],
                 notes=survey_data.get("notes", None),
-                date_survey_completed=date.today(),
+                date_survey_completed=datetime.utcnow(),
                 payment=survey_data.get("payment", 0),
                 stage=survey_data.get("stage", "Applied"),
                 date_fg_completed=survey_data.get("date_fg_completed", None),
@@ -33,6 +35,17 @@ class Survey(db.Model):
                 ),
                 payment_left=survey_data.get("payment_left", 0),
             )
+
+            if survey_data.get("date_fg_completed"):
+                new_survey.date_fg_completed = datetime.strptime(
+                    survey_data["date_fg_completed"], "%Y-%m-%d"
+                )
+
+            if survey_data.get("payment_expiration_date"):
+                new_survey.payment_expiration_date = datetime.strptime(
+                    survey_data["payment_expiration_date"], "%Y-%m-%d"
+                )
+
         except KeyError:
             abort(make_response(jsonify({"details": "Invalid data"}), 400))
 
@@ -58,3 +71,13 @@ class Survey(db.Model):
         for k, v in survey_data.items():
             if hasattr(self, k):
                 setattr(self, k, v)
+
+        if survey_data.get("date_fg_completed"):
+            self.date_fg_completed = datetime.strptime(
+                survey_data["date_fg_completed"], "%Y-%m-%d"
+            )
+
+        if survey_data.get("payment_expiration_date"):
+            self.payment_expiration_date = datetime.strptime(
+                survey_data["payment_expiration_date"], "%Y-%m-%d"
+            )
