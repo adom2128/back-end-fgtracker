@@ -1,5 +1,5 @@
 from app import db
-from datetime import datetime
+from datetime import datetime, timezone
 from flask import abort, make_response, jsonify
 
 
@@ -9,7 +9,7 @@ class Survey(db.Model):
     topic = db.Column(db.String(100), nullable=False)
     notes = db.Column(db.String(255), nullable=True)
     date_survey_completed = db.Column(
-        db.DateTime, nullable=False, default=datetime.utcnow()
+        db.DateTime, nullable=False, default=datetime.now(timezone.utc)
     )
     payment = db.Column(db.Numeric(), nullable=False, default=0)
     stage = db.Column(db.String(100), nullable=False, default="Applied")
@@ -25,7 +25,7 @@ class Survey(db.Model):
                 company=survey_data["company"],
                 topic=survey_data["topic"],
                 notes=survey_data.get("notes", None),
-                date_survey_completed=datetime.utcnow(),
+                date_survey_completed=datetime.now(timezone.utc),
                 payment=survey_data.get("payment", 0),
                 stage=survey_data.get("stage", "Applied"),
                 date_fg_completed=survey_data.get("date_fg_completed", None),
