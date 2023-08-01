@@ -9,7 +9,7 @@ class Survey(db.Model):
     topic = db.Column(db.String(100), nullable=False)
     notes = db.Column(db.String(255), nullable=True)
     date_survey_completed = db.Column(
-        db.DateTime, nullable=False, default=datetime.today()
+        db.DateTime, nullable=False, default=datetime.utcnow()
     )
     payment = db.Column(db.Numeric(), nullable=False, default=0)
     stage = db.Column(db.String(100), nullable=False, default="Applied")
