@@ -25,7 +25,9 @@ class Survey(db.Model):
                 company=survey_data["company"],
                 topic=survey_data["topic"],
                 notes=survey_data.get("notes", None),
-                date_survey_completed=datetime.now(timezone.utc),
+                date_survey_completed=survey_data.get(
+                    "date_survey_completed", datetime.now(timezone.utc)
+                ),
                 payment=survey_data.get("payment", 0),
                 stage=survey_data.get("stage", "Applied"),
                 date_fg_completed=survey_data.get("date_fg_completed", None),
