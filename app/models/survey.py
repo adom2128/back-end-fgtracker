@@ -46,6 +46,9 @@ class Survey(db.Model):
                     survey_data["payment_expiration_date"], "%Y-%m-%d"
                 )
 
+            if not survey_data.date_survey_completed:
+                new_survey.date_survey_completed = datetime.now(timezone.utc)
+
         except KeyError:
             abort(make_response(jsonify({"details": "Invalid data"}), 400))
 
