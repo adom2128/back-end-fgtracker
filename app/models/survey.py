@@ -4,13 +4,13 @@ from flask import abort, make_response, jsonify
 
 
 class Survey(db.Model):
-    survey_id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     company = db.Column(db.String(100), nullable=False)
     topic = db.Column(db.String(100), nullable=False)
     notes = db.Column(db.String(255), nullable=True)
     date_survey_completed = db.Column(db.DateTime, nullable=False)
     payment = db.Column(db.Numeric(), nullable=False, default=0)
-    stage = db.Column(db.String(100), nullable=False, default="Applied")
+    stage = db.Column(db.String(100), nullable=False)
     date_fg_completed = db.Column(db.DateTime, default=None)
     payment_received = db.Column(db.Boolean, nullable=False, default=False)
     payment_expiration_date = db.Column(db.DateTime, default=None)
@@ -53,7 +53,7 @@ class Survey(db.Model):
 
     def to_dict(self):
         survey_dict = {}
-        survey_dict["survey_id"] = self.survey_id
+        survey_dict["id"] = self.id
         survey_dict["company"] = self.company
         survey_dict["topic"] = self.topic
         survey_dict["notes"] = self.notes
