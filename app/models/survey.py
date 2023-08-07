@@ -8,7 +8,7 @@ class Survey(db.Model):
     company = db.Column(db.String(100), nullable=False)
     topic = db.Column(db.String(100), nullable=False)
     notes = db.Column(db.String(255), nullable=True)
-    date_survey_completed = db.Column(db.DateTime, nullable=False)
+    date_survey_completed = db.Column(db.DateTime)
     payment = db.Column(db.Numeric(), nullable=False, default=0)
     stage = db.Column(db.String(100), nullable=False)
     date_fg_completed = db.Column(db.DateTime, default=None)
@@ -45,9 +45,6 @@ class Survey(db.Model):
                 new_survey.payment_expiration_date = datetime.strptime(
                     survey_data["payment_expiration_date"], "%Y-%m-%d"
                 )
-
-            if not survey_data.date_survey_completed:
-                new_survey.date_survey_completed = datetime.now(timezone.utc)
 
         except KeyError:
             abort(make_response(jsonify({"details": "Invalid data"}), 400))
