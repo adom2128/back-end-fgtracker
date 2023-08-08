@@ -26,13 +26,16 @@ def create_app(test_config=None):
         )
 
     from app.models.survey import Survey
+    from app.models.payment import Payment
 
     db.init_app(app)
     migrate.init_app(app, db)
 
     from .routes import surveys_bp
+    from .payment_routes import payments_bp
 
     app.register_blueprint(surveys_bp)
+    app.register_blueprint(payments_bp)
 
     CORS(app)
     return app

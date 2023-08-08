@@ -2,15 +2,18 @@ from flask import Blueprint, request, jsonify, make_response
 from app import db
 from app.models.survey import Survey
 from .route_helpers import validate_model
+from sqlalchemy import desc
 
 surveys_bp = Blueprint("survey", __name__, url_prefix="/surveys")
 
 
 @surveys_bp.route("", methods=["GET"])
 def get_all_surveys():
-    surveys = Survey.query.all()
+    query = Survey.query
 
-    surveys_response = [survey.to_dict() for survey in surveys]
+    survey_query = query.order_by(desc(Survey.date_survey_completed))
+
+    surveys_response = [survey.to_dict() for survey in survey_query]
 
     return make_response(jsonify(surveys_response), 200)
 

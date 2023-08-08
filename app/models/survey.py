@@ -15,6 +15,8 @@ class Survey(db.Model):
     payment_received = db.Column(db.Boolean, nullable=False, default=False)
     payment_expiration_date = db.Column(db.DateTime, default=None)
     payment_left = db.Column(db.Numeric(), default=0)
+    payment_id = db.Column(db.Integer, db.ForeignKey('payment.payment_id'), nullable=False)
+    payment = db.relationship("Payment", back_populates="survey")
 
     @classmethod
     def from_dict(cls, survey_data):
