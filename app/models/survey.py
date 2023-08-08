@@ -36,8 +36,8 @@ class Survey(db.Model):
                     "payment_expiration_date", None
                 ),
                 payment_left=survey_data.get("payment_left", 0),
-                last_four=survey_data["last_four"],
-                link=survey_data["link"],
+                last_four=survey_data.get("last_four", None),
+                link=survey_data.get("link", None),
             )
 
             if survey_data.get("date_fg_completed"):
