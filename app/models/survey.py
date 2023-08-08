@@ -15,8 +15,8 @@ class Survey(db.Model):
     payment_received = db.Column(db.Boolean, nullable=False, default=False)
     payment_expiration_date = db.Column(db.DateTime, default=None)
     payment_left = db.Column(db.Numeric(), default=0)
-    payment_id = db.Column(db.Integer, db.ForeignKey('payment.payment_id'), nullable=False)
-    payment = db.relationship("Payment", back_populates="survey")
+    last_four = db.Column(db.String)
+    link = db.Column(db.String)
 
     @classmethod
     def from_dict(cls, survey_data):
@@ -36,6 +36,8 @@ class Survey(db.Model):
                     "payment_expiration_date", None
                 ),
                 payment_left=survey_data.get("payment_left", 0),
+                last_four=survey_data["last_four"],
+                link=survey_data["link"],
             )
 
             if survey_data.get("date_fg_completed"):
@@ -66,6 +68,8 @@ class Survey(db.Model):
         survey_dict["payment_received"] = self.payment_received
         survey_dict["payment_expiration_date"] = self.payment_expiration_date
         survey_dict["payment_left"] = float(self.payment_left)
+        survey_dict["last_four"] = self.last_four
+        survey_dict["link"] = self.link
 
         return survey_dict
 
