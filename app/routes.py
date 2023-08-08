@@ -35,7 +35,7 @@ def update_survey(survey_id):
     updated_survey = validate_model(Survey, survey_id)
 
     request_body = request.get_json()
-    updated_survey.updated_survey.update_from_dict(request_body)
+    updated_survey.update_from_dict(request_body)
 
     db.session.commit()
 
@@ -60,7 +60,7 @@ def update_payment_balance(survey_id):
 
     request_body = request.get_json()
     survey.update_from_dict(request_body)
-    
+
     db.session.commit()
 
     return jsonify(survey.to_dict()), 200
